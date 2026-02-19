@@ -6,3 +6,27 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+model User {
+  id         String     @id @default(uuid())
+  email      String
+  password   String
+  role       UserRole   @default(STUDENT)
+  status     UserStatus @default(ACTIVE)
+  created_at DateTime   @default(now())
+  updated_at DateTime   @updatedAt
+
+  @@index([status])
+  @@map("users")
+}
+
+enum UserRole {
+  STUDENT
+  TUTOR
+  ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  BANNED
+}

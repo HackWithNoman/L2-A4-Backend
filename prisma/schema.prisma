@@ -9,6 +9,7 @@ datasource db {
 
 model User {
   id         String     @id @default(uuid())
+  name       String
   email      String     @unique
   password   String
   role       UserRole   @default(STUDENT)
@@ -16,8 +17,83 @@ model User {
   created_at DateTime   @default(now())
   updated_at DateTime   @updatedAt
 
+  tutorProfile TutorProfile?
+  bookingsAs   Booking[]     @relation("StudentBookings")
+  reviews      Review[]      @relation("StudentReviews")
+
   @@index([status])
   @@map("users")
+}
+
+model TutorProfile {
+  id          String  @id @default(uuid())
+  user_id     String  @unique
+  category_id String
+  bio         String
+  hourly_rate Decimal
+  rating      Float   @default(0)
+
+  user         User           @relation(fields: [user_id], references: [id])
+  category     Category       @relation(fields: [category_id], references: [id])
+  availability Availability[]
+  bookings     Booking[]      @relation("TutorBookings")
+  reviews      Review[]       @relation("TutorReviews")
+
+  @@map("tutor_profiles")
+}
+
+model Category {
+  id          String  @id @default(uuid())
+  name        String  @unique
+  description String?
+
+  tutorProfiles TutorProfile[]
+
+  @@map("categories")
+}
+
+model Availability {
+  id         String   @id @default(uuid())
+  tutor_id   String
+  start_time DateTime
+  end_time   DateTime
+  is_booked  Boolean  @default(false)
+
+  tutor   TutorProfile @relation(fields: [tutor_id], references: [id])
+  booking Booking?
+
+  @@map("availability")
+}
+
+model Booking {
+  id          String        @id @default(uuid())
+  student_id  String
+  tutor_id    String
+  slot_id     String        @unique
+  status      BookingStatus @default(CONFIRMED)
+  total_price Decimal
+
+  student User         @relation("StudentBookings", fields: [student_id], references: [id])
+  tutor   TutorProfile @relation("TutorBookings", fields: [tutor_id], references: [id])
+  slot    Availability @relation(fields: [slot_id], references: [id])
+  review  Review?
+
+  @@map("bookings")
+}
+
+model Review {
+  id         String @id @default(uuid())
+  booking_id String @unique
+  student_id String
+  tutor_id   String
+  rating     Int
+  comment    String
+
+  booking Booking      @relation(fields: [booking_id], references: [id])
+  student User         @relation("StudentReviews", fields: [student_id], references: [id])
+  tutor   TutorProfile @relation("TutorReviews", fields: [tutor_id], references: [id])
+
+  @@map("reviews")
 }
 
 enum UserRole {
@@ -29,4 +105,10 @@ enum UserRole {
 enum UserStatus {
   ACTIVE
   BANNED
+}
+
+enum BookingStatus {
+  CONFIRMED
+  COMPLETED
+  CANCELLED
 }

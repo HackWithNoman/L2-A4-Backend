@@ -1,11 +1,17 @@
 import { prisma } from "../../lib/prisma";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { UserRole } from "../../../generated/prisma/client";
 
 const JWT_SECRET = process.env.JWT_SECRET!;
 const SALT_ROUNDS = 10;
 
-const createUser = async (email: string, password: string, role: string) => {
+const createUser = async (
+  name: string,
+  email: string,
+  password: string,
+  role: string,
+) => {
   const existingUser = await prisma.user.findFirst({ where: { email } });
   if (existingUser) {
     throw new Error("User already exists");
@@ -14,7 +20,12 @@ const createUser = async (email: string, password: string, role: string) => {
   const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
 
   const user = await prisma.user.create({
-    data: { email, password: hashedPassword },
+    data: {
+      email,
+      name,
+      password: hashedPassword,
+      role: role as UserRole,
+    },
   });
 
   const token = jwt.sign(
@@ -57,7 +68,6 @@ const getMe = async (userId: string) => {
   });
   return user;
 };
-
 
 export const authService = {
   createUser,

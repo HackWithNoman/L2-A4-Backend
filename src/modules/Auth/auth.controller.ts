@@ -3,14 +3,16 @@ import { authService } from "./auth.service";
 
 const createUser = async (req: Request, res: Response) => {
   try {
-    const { email, password, role } = req.body;
+    const { name, email, password, role } = req.body;
 
-    if (!email || !password) {
-      res.status(400).json({ message: "Email and password are required" });
+    if (!email || !name || !password) {
+      res
+        .status(400)
+        .json({ message: "Email, name and password are required" });
       return;
     }
 
-    const result = await authService.createUser(email, password, role);
+    const result = await authService.createUser(name, email, password, role);
     res.status(201).json({ message: "User created successfully", ...result });
   } catch (error: any) {
     if (error.message === "User already exists") {

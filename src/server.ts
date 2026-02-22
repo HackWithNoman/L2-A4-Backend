@@ -6,7 +6,7 @@ dotenv.config();
 const PORT = process.env.PORT || 5000;
 
 app.get("/", (req, res) => {
-  res.send("Skillbridge Backend");
+  res.json({ message: "Welcome to skillbridge API" });
 });
 
 app.listen(PORT, () => {

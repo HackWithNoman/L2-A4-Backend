@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { authService } from "./auth.service";
-import { prisma } from "../../lib/prisma";
 
 const createUser = async (req: Request, res: Response) => {
   try {

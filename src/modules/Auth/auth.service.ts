@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 const JWT_SECRET = process.env.JWT_SECRET!;
 const SALT_ROUNDS = 10;
 
-const createUser = async (email: string, password: string) => {
+const createUser = async (email: string, password: string, role: string) => {
   const existingUser = await prisma.user.findFirst({ where: { email } });
   if (existingUser) {
     throw new Error("User already exists");

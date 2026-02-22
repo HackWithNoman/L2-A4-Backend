@@ -2,30 +2,42 @@ import { Request, Response } from "express";
 import { authService } from "./auth.service";
 
 const createUser = async (req: Request, res: Response) => {
-  const { email, password } = req.body;
-
-  if (!email || !password) {
-    return res.status(400).json({ error: "Email and password required" });
-  }
-
   try {
-    const result = await authService.createUser(email, password);
-    res.status(201).json(result);
-  } catch (err: any) {
-    console.error("createUser error:", err);
-    res.status(500).json({ error: "Failed to create user" });
+    const { email, password, role } = req.body;
+
+    if (!email || !password) {
+      res.status(400).json({ message: "Email and password are required" });
+      return;
+    }
+
+    const result = await authService.createUser(email, password, role);
+    res.status(201).json({ message: "User created successfully", ...result });
+  } catch (error: any) {
+    if (error.message === "User already exists") {
+      res.status(409).json({ message: error.message });
+      return;
+    }
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
 const loginUser = async (req: Request, res: Response) => {
   try {
-    const user = await authService.loginUser(req.body.email, req.body.password);
-    if (!user) {
-      return res.status(401).json({ error: "Invalid credentials" });
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      res.status(400).json({ message: "Email and password are required" });
+      return;
     }
-    res.status(200).json(user);
-  } catch (error) {
-    res.status(500).json({ error: "Failed to login user" });
+
+    const result = await authService.loginUser(email, password);
+    res.status(200).json({ message: "Login successful", ...result });
+  } catch (error: any) {
+    if (error.message === "Invalid credentials") {
+      res.status(401).json({ message: error.message });
+      return;
+    }
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 

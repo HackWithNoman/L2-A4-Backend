@@ -42,6 +42,7 @@ model TutorProfile {
   @@map("tutor_profiles")
 }
 
+
 model Category {
   id          String  @id @default(uuid())
   name        String  @unique

@@ -11,4 +11,18 @@ router.post(
   adminController.createCategory,
 );
 
+router.put(
+  "/categories/:id",
+  authenticate,
+  authorize("ADMIN"),
+  adminController.updateCategory,
+);
+
+router.delete(
+  "/categories/:id",
+  authenticate,
+  authorize("ADMIN"),
+  adminController.deleteCategory,
+);
+
 export const adminRouter = router;

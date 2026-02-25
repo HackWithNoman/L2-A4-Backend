@@ -12,6 +12,25 @@ const createCategory = async (payload: JwtPayload) => {
   return category;
 };
 
+const updateCategory = async (id: string, data: any) => {
+  const category = await prisma.category.update({
+    where: { id },
+    data,
+  });
+
+  return { category };
+};
+
+const deleteCategory = async (id: string) => {
+  const category = await prisma.category.delete({
+    where: { id },
+  });
+
+  return { category };
+};
+
 export const adminService = {
   createCategory,
+  updateCategory,
+  deleteCategory,
 };

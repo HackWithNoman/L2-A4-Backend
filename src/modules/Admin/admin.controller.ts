@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { adminService } from "./admin.service";
 
 const createCategory = async (req: Request, res: Response) => {
@@ -27,6 +27,44 @@ const createCategory = async (req: Request, res: Response) => {
   }
 };
 
+const updateCategory = async (
+  req: Request<{ id: string }>,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { id } = req.params;
+    const data = req.body;
+
+    const result = await adminService.updateCategory(id, data);
+    res
+      .status(200)
+      .json({ message: "Category updated successfully", ...result });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const deleteCategory = async (
+  req: Request<{ id: string }>,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { id } = req.params;
+
+    const result = await adminService.deleteCategory(id);
+
+    res
+      .status(200)
+      .json({ message: "Category deleted successfully", ...result });
+  } catch (err) {
+    next(err);
+  }
+};
+
 export const adminController = {
   createCategory,
+  updateCategory,
+  deleteCategory,
 };

@@ -32,7 +32,139 @@ const updateProfile = async (userId: string, data: any) => {
   return { profile };
 };
 
+const createBooking = async (studentId: string, data: any) => {
+  const slot = await prisma.availability.findUnique({
+    where: { id: data.slot_id },
+  });
+
+  if (!slot) {
+    throw new AppError("Slot not found", 404);
+  }
+
+  if (slot.is_booked) {
+    throw new AppError("Slot is already booked", 400);
+  }
+
+  const tutor = await prisma.tutorProfile.findUnique({
+    where: { id: slot.tutor_id },
+  });
+
+  if (!tutor) {
+    throw new AppError("Tutor not found", 404);
+  }
+
+  const durationHours =
+    (slot.end_time.getTime() - slot.start_time.getTime()) / (1000 * 60 * 60);
+  const totalPrice = Number(tutor.hourly_rate) * durationHours;
+
+  const booking = await prisma.booking.create({
+    data: {
+      student_id: studentId,
+      tutor_id: slot.tutor_id,
+      slot_id: data.slot_id,
+      total_price: totalPrice,
+    },
+  });
+
+  await prisma.availability.update({
+    where: { id: data.slot_id },
+    data: { is_booked: true },
+  });
+
+  return { booking };
+};
+
+const getBookings = async (studentId: string) => {
+  const bookings = await prisma.booking.findMany({
+    where: { student_id: studentId },
+    include: {
+      tutor: {
+        include: {
+          user: {
+            select: {
+              name: true,
+              email: true,
+            },
+          },
+        },
+      },
+      slot: true,
+      review: true,
+    },
+  });
+  return { bookings };
+};
+
+const getBookingById = async (studentId: string, bookingId: string) => {
+  const booking = await prisma.booking.findUnique({
+    where: { id: bookingId },
+    include: {
+      tutor: {
+        include: {
+          user: {
+            select: {
+              name: true,
+              email: true,
+            },
+          },
+        },
+      },
+      slot: true,
+      review: true,
+    },
+  });
+
+  if (!booking) {
+    throw new AppError("Booking not found", 404);
+  }
+
+  if (booking.student_id !== studentId) {
+    throw new AppError("You can only view your own bookings", 403);
+  }
+
+  return { booking };
+};
+
+const cancelBooking = async (studentId: string, bookingId: string) => {
+  const booking = await prisma.booking.findUnique({
+    where: { id: bookingId },
+  });
+
+  if (!booking) {
+    throw new AppError("Booking not found", 404);
+  }
+
+  if (booking.student_id !== studentId) {
+    throw new AppError("You can only cancel your own bookings", 403);
+  }
+
+  if (booking.status === "CANCELLED") {
+    throw new AppError("Booking is already cancelled", 400);
+  }
+
+  if (booking.status === "COMPLETED") {
+    throw new AppError("Cannot cancel a completed booking", 400);
+  }
+
+  const updated = await prisma.booking.update({
+    where: { id: bookingId },
+    data: { status: "CANCELLED" },
+  });
+
+  // free up the slot again
+  await prisma.availability.update({
+    where: { id: booking.slot_id },
+    data: { is_booked: false },
+  });
+
+  return { booking: updated };
+};
+
 export const studentService = {
   getProfile,
   updateProfile,
+  createBooking,
+  getBookings,
+  getBookingById,
+  cancelBooking,
 };

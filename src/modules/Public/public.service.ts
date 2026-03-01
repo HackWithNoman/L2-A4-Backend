@@ -43,6 +43,8 @@ const getTutorById = async (id: string) => {
     },
   });
 
+  console.log(tutor, id);
+
   if (!tutor) {
     throw new AppError("Tutor not found", 404);
   }

@@ -60,10 +60,75 @@ const deleteAvailability = async (id: string, userId: string) => {
   return await prisma.availability.delete({ where: { id } });
 };
 
+const getTutorBookings = async (userId: string) => {
+  const profile = await prisma.tutorProfile.findUnique({
+    where: { user_id: userId },
+  });
+
+  if (!profile) {
+    throw new AppError("Tutor profile not found", 404);
+  }
+
+  const bookings = await prisma.booking.findMany({
+    where: { tutor_id: profile.id },
+    include: {
+      student: {
+        select: {
+          name: true,
+          email: true,
+        },
+      },
+      slot: true,
+      review: true,
+    },
+  });
+
+  return { bookings };
+};
+
+const updateBookingStatus = async (userId: string, bookingId: string) => {
+  const profile = await prisma.tutorProfile.findUnique({
+    where: { user_id: userId },
+  });
+
+  if (!profile) {
+    throw new AppError("Tutor profile not found", 404);
+  }
+
+  const booking = await prisma.booking.findUnique({
+    where: { id: bookingId },
+  });
+
+  if (!booking) {
+    throw new AppError("Booking not found", 404);
+  }
+
+  if (booking.tutor_id !== profile.id) {
+    throw new AppError("You can only update your own bookings", 403);
+  }
+
+  if (booking.status === "COMPLETED") {
+    throw new AppError("Booking is already completed", 400);
+  }
+
+  if (booking.status === "CANCELLED") {
+    throw new AppError("Cannot complete a cancelled booking", 400);
+  }
+
+  const updated = await prisma.booking.update({
+    where: { id: bookingId },
+    data: { status: "COMPLETED" },
+  });
+
+  return { booking: updated };
+};
+
 export const tutorService = {
   createProfile,
   getProfile,
   updateProfile,
   createAvailability,
   deleteAvailability,
+  getTutorBookings,
+  updateBookingStatus,
 };

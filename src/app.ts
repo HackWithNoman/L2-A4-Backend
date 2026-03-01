@@ -20,7 +20,7 @@ app.use("/api/v1/admin", adminRouter);
 app.use("/api/v1", publicRouter);
 
 // Tutors
-app.use("/api/v1/tutors", tutorRouter);
+app.use("/api/v1/tutor", tutorRouter);
 
 app.use("/api/v1/student", studentRouter);
 

@@ -31,7 +31,22 @@ router.post(
 router.delete(
   "/availability/:id",
   authenticate,
+  authorize("TUTOR"),
   tutorController.deleteAvailability,
+);
+
+router.get(
+  "/bookings",
+  authenticate,
+  authorize("TUTOR"),
+  tutorController.getTutorBookings,
+);
+
+router.patch(
+  "/bookings/:id",
+  authenticate,
+  authorize("TUTOR"),
+  tutorController.updateBookingStatus,
 );
 
 export const tutorRouter = router;

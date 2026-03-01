@@ -13,7 +13,7 @@ export const authenticate = (
     const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {
       userId: string;
       email: string;
-      role: "student" | "tutor" | "admin";
+      role: "STUDENT" | "TUTOR" | "ADMIN";
     };
 
     req.user = decoded;

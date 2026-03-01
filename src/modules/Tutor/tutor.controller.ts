@@ -119,10 +119,59 @@ const deleteAvailability = async (
   }
 };
 
+const getTutorBookings = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const userId = req.user?.userId;
+
+    if (!userId) {
+      throw new AppError("Unauthorized", 401);
+    }
+
+    const result = await tutorService.getTutorBookings(userId);
+    res.status(200).json({
+      success: true,
+      message: "Bookings retrieved successfully",
+      ...result,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const updateBookingStatus = async (
+  req: Request<{ id: string }>,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const userId = req.user?.userId;
+
+    if (!userId) {
+      throw new AppError("Unauthorized", 401);
+    }
+
+    const { id } = req.params;
+    const result = await tutorService.updateBookingStatus(userId, id);
+    res.status(200).json({
+      success: true,
+      message: "Booking marked as completed",
+      ...result,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
 export const tutorController = {
   createProfile,
   getProfile,
   updateProfile,
   createAvailability,
   deleteAvailability,
+  getTutorBookings,
+  updateBookingStatus,
 };

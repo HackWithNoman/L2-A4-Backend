@@ -135,6 +135,29 @@ const cancelBooking = async (
   }
 };
 
+const createReview = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const userId = req.user?.userId;
+
+    if (!userId) {
+      throw new AppError("Unauthorized", 401);
+    }
+
+    const result = await studentService.createReview(userId, req.body);
+    res.status(201).json({
+      success: true,
+      message: "Review created successfully",
+      ...result,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
 export const studentController = {
   getProfile,
   updateProfile,
@@ -142,4 +165,5 @@ export const studentController = {
   getBookings,
   getBookingById,
   cancelBooking,
+  createReview,
 };

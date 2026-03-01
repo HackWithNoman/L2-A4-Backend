@@ -160,6 +160,44 @@ const cancelBooking = async (studentId: string, bookingId: string) => {
   return { booking: updated };
 };
 
+const createReview = async (studentId: string, data: any) => {
+  const booking = await prisma.booking.findUnique({
+    where: { id: data.booking_id },
+  });
+
+  if (!booking) {
+    throw new AppError("Booking not found", 404);
+  }
+
+  if (booking.student_id !== studentId) {
+    throw new AppError("You can only review your own bookings", 403);
+  }
+
+  if (booking.status !== "COMPLETED") {
+    throw new AppError("You can only review completed bookings", 400);
+  }
+
+  const existingReview = await prisma.review.findUnique({
+    where: { booking_id: data.booking_id },
+  });
+
+  if (existingReview) {
+    throw new AppError("You have already reviewed this booking", 400);
+  }
+
+  const review = await prisma.review.create({
+    data: {
+      booking_id: data.booking_id,
+      student_id: studentId,
+      tutor_id: booking.tutor_id,
+      rating: data.rating,
+      comment: data.comment,
+    },
+  });
+
+  return { review };
+};
+
 export const studentService = {
   getProfile,
   updateProfile,
@@ -167,4 +205,5 @@ export const studentService = {
   getBookings,
   getBookingById,
   cancelBooking,
+  createReview,
 };

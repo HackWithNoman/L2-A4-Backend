@@ -45,4 +45,11 @@ router.patch(
   studentController.cancelBooking,
 );
 
+router.post(
+  "/reviews",
+  authenticate,
+  authorize("STUDENT"),
+  studentController.createReview,
+);
+
 export const studentRouter = router;

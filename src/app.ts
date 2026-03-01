@@ -22,6 +22,7 @@ app.use("/api/v1", publicRouter);
 // Tutors
 app.use("/api/v1/tutor", tutorRouter);
 
+// Student
 app.use("/api/v1/student", studentRouter);
 
 // Global Error Hanler

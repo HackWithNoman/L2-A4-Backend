@@ -1,5 +1,7 @@
 import { JwtPayload } from "jsonwebtoken";
 import { prisma } from "../../lib/prisma";
+import AppError from "../../errors/AppError";
+import { UserStatus } from "../../../generated/prisma/enums";
 
 const createCategory = async (payload: JwtPayload) => {
   const category = await prisma.category.create({
@@ -29,8 +31,75 @@ const deleteCategory = async (id: string) => {
   return { category };
 };
 
+const getAllUsers = async () => {
+  const users = await prisma.user.findMany({
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      role: true,
+      status: true,
+      created_at: true,
+    },
+  });
+  return { users };
+};
+
+const updateUserStatus = async (userId: string, status: string) => {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+  });
+
+  if (!user) {
+    throw new AppError("User not found", 404);
+  }
+
+  const updated = await prisma.user.update({
+    where: { id: userId },
+    data: { status: status as UserStatus },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      role: true,
+      status: true,
+    },
+  });
+
+  return { user: updated };
+};
+
+const getAllBookings = async () => {
+  const bookings = await prisma.booking.findMany({
+    include: {
+      student: {
+        select: {
+          name: true,
+          email: true,
+        },
+      },
+      tutor: {
+        include: {
+          user: {
+            select: {
+              name: true,
+              email: true,
+            },
+          },
+        },
+      },
+      slot: true,
+      review: true,
+    },
+  });
+  return { bookings };
+};
+
 export const adminService = {
   createCategory,
   updateCategory,
   deleteCategory,
+  getAllUsers,
+  updateUserStatus,
+  getAllBookings,
 };

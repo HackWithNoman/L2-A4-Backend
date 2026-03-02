@@ -1,5 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { adminService } from "./admin.service";
+import AppError from "../../errors/AppError";
+import { UserStatus } from "../../../generated/prisma/enums";
 
 const createCategory = async (req: Request, res: Response) => {
   const payload = req.body;
@@ -63,8 +65,72 @@ const deleteCategory = async (
   }
 };
 
+const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const result = await adminService.getAllUsers();
+    res.status(200).json({
+      success: true,
+      message: "Users retrieved successfully",
+      ...result,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const updateUserStatus = async (
+  req: Request<{ id: string }>,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    if (!status) {
+      throw new AppError("Status is required", 400);
+    }
+
+    if (!["ACTIVE", "BANNED"].includes(status)) {
+      throw new AppError("Status must be ACTIVE or BANNED", 400);
+    }
+
+    const result = await adminService.updateUserStatus(
+      id,
+      status as UserStatus,
+    );
+    res.status(200).json({
+      success: true,
+      message: "User status updated successfully",
+      ...result,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const getAllBookings = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const result = await adminService.getAllBookings();
+    res.status(200).json({
+      success: true,
+      message: "Bookings retrieved successfully",
+      ...result,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
 export const adminController = {
   createCategory,
   updateCategory,
   deleteCategory,
+  getAllUsers,
+  updateUserStatus,
+  getAllBookings,
 };

@@ -25,4 +25,25 @@ router.delete(
   adminController.deleteCategory,
 );
 
+router.get(
+  "/users",
+  authenticate,
+  authorize("ADMIN"),
+  adminController.getAllUsers,
+);
+
+router.patch(
+  "/users/:id",
+  authenticate,
+  authorize("ADMIN"),
+  adminController.updateUserStatus,
+);
+
+router.get(
+  "/bookings",
+  authenticate,
+  authorize("ADMIN"),
+  adminController.getAllBookings,
+);
+
 export const adminRouter = router;

@@ -1,0 +1,27 @@
+meta {
+  name: Update Profile
+  type: http
+  seq: 3
+}
+
+put {
+  url: http://localhost:4000/api/v1/tutor/profile
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3MTQyNzgwMS00Mjg2LTQxN2EtODJkMC0zYmZkNmYwNDk4NjEiLCJlbWFpbCI6InR1dG9yQG1haWwuY29tIiwicm9sZSI6IlRVVE9SIiwiaWF0IjoxNzcyMzE2MzgzLCJleHAiOjE3NzI5MjExODN9.h_RQmr4SGs5hhKjRgw9PAm0bJqtHG-Y8PQzLNUXG_VQ
+}
+
+body:json {
+  {
+    "bio": "this is notun bio",
+    "hourly_rate": 35.00
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

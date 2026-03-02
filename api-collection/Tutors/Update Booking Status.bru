@@ -1,0 +1,25 @@
+meta {
+  name: Update Booking Status
+  type: http
+  seq: 7
+}
+
+patch {
+  url: http://localhost:4000/api/v1/tutor/bookings/26050526-e6db-48f6-bea2-929d44dd707e
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3MTQyNzgwMS00Mjg2LTQxN2EtODJkMC0zYmZkNmYwNDk4NjEiLCJlbWFpbCI6InR1dG9yQG1haWwuY29tIiwicm9sZSI6IlRVVE9SIiwiaWF0IjoxNzcyMzk0NTQ4LCJleHAiOjE3NzI5OTkzNDh9.5eg82dA065po1Sp3G3CWIAhH-dNMpaBMk5ZEH3NKDDE
+}
+
+body:json {
+  
+  
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

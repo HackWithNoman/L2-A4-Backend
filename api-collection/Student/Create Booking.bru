@@ -1,0 +1,22 @@
+meta {
+  name: Create Booking
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:4000/api/v1/student/bookings
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "slot_id": "43a615e3-5a4f-483c-811c-12b773e281c7"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

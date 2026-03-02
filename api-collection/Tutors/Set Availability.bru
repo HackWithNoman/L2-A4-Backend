@@ -1,0 +1,27 @@
+meta {
+  name: Set Availability
+  type: http
+  seq: 4
+}
+
+post {
+  url: http://localhost:4000/api/v1/tutor/availability
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3MTQyNzgwMS00Mjg2LTQxN2EtODJkMC0zYmZkNmYwNDk4NjEiLCJlbWFpbCI6InR1dG9yQG1haWwuY29tIiwicm9sZSI6IlRVVE9SIiwiaWF0IjoxNzcyMjExNzM1LCJleHAiOjE3NzI4MTY1MzV9.TP9fhYKFe0W-D_ztnScEHXEy3yS7anhODCA7BwrBk08
+}
+
+body:json {
+  {
+    "start_time": "2026-03-01T10:00:00.000Z",
+    "end_time": "2026-03-01T11:00:00.000Z"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

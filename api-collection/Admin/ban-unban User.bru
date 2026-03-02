@@ -1,0 +1,24 @@
+meta {
+  name: ban/unban User
+  type: http
+  seq: 5
+}
+
+patch {
+  url: http://localhost:4000/api/v1/admin/users/67eef5f0-a15c-45e3-bb79-9cecaaed2352
+  body: json
+  auth: inherit
+}
+
+headers {
+  ~Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2VlZjVmMC1hMTVjLTQ1ZTMtYmI3OS05Y2VjYWFlZDIzNTIiLCJlbWFpbCI6ImFkbWluQG1haWwuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcxODYxNTgxLCJleHAiOjE3NzI0NjYzODF9.Y-5gP36WvEfcuYndiMhQhHi-d_Q1_OamkwreVSWsGHY
+}
+
+body:json {
+  { "status": "ACTIVE" }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

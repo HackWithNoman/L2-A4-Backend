@@ -1,0 +1,25 @@
+meta {
+  name: Register
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:4000/api/v1/auth/register
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "name": "Mr. Tutor",
+    "email": "tutor@mail.com",
+    "password": "12345",
+    "role": "TUTOR"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

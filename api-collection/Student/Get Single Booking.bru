@@ -1,0 +1,20 @@
+meta {
+  name: Get Single Booking
+  type: http
+  seq: 5
+}
+
+get {
+  url: http://localhost:4000/api/v1/student/bookings/b8b2f5d4-29be-4c90-8861-c743605eb9f1
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJhZjZjNjU0ZC1hNjcyLTRhNmYtYTAyNS00ZDg4ZWI4ZmZjMTUiLCJlbWFpbCI6Im5vbWFuMzNAbWFpbC5jb20iLCJyb2xlIjoiU1RVREVOVCIsImlhdCI6MTc3MjIxOTA4OSwiZXhwIjoxNzcyODIzODg5fQ.QIe3xInxsb_ta4Bl03Mj5VPyP9-alNLzVaaPVaSgUIU
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

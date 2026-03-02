@@ -1,0 +1,28 @@
+meta {
+  name: Craete Proflie
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:4000/api/v1/tutor/profile
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI3MTQyNzgwMS00Mjg2LTQxN2EtODJkMC0zYmZkNmYwNDk4NjEiLCJlbWFpbCI6InR1dG9yQG1haWwuY29tIiwicm9sZSI6IlRVVE9SIiwiaWF0IjoxNzcyMTkzNDgzLCJleHAiOjE3NzI3OTgyODN9.4HVquz46H7YKj1TPDMi55_U2p_L4JQ5CugsxgMOaf6w
+}
+
+body:json {
+  {
+    "category_id": "799acfbe-af91-4854-94b1-368829e71d18",
+    "bio": "Experienced mathematics tutor with 5 years of teaching at university level. Specialized in calculus and algebra.",
+    "hourly_rate": 25.00
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

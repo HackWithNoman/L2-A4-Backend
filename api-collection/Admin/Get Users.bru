@@ -1,0 +1,27 @@
+meta {
+  name: Get Users
+  type: http
+  seq: 4
+}
+
+get {
+  url: http://localhost:4000/api/v1/admin/users/
+  body: none
+  auth: inherit
+}
+
+headers {
+  ~Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2VlZjVmMC1hMTVjLTQ1ZTMtYmI3OS05Y2VjYWFlZDIzNTIiLCJlbWFpbCI6ImFkbWluQG1haWwuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcxODYxNTgxLCJleHAiOjE3NzI0NjYzODF9.Y-5gP36WvEfcuYndiMhQhHi-d_Q1_OamkwreVSWsGHY
+}
+
+body:json {
+  {
+    "name": "Algebra",
+    "description": "learn basic to advanced English from best teachers"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

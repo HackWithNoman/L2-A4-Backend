@@ -1,0 +1,31 @@
+meta {
+  name: Delete Category
+  type: http
+  seq: 3
+}
+
+delete {
+  url: http://localhost:4000/api/v1/admin/categories/8c350d8c-7149-4fa8-a30a-b15c09bd3cff
+  body: none
+  auth: bearer
+}
+
+headers {
+  ~Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2VlZjVmMC1hMTVjLTQ1ZTMtYmI3OS05Y2VjYWFlZDIzNTIiLCJlbWFpbCI6ImFkbWluQG1haWwuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcxODYxNTgxLCJleHAiOjE3NzI0NjYzODF9.Y-5gP36WvEfcuYndiMhQhHi-d_Q1_OamkwreVSWsGHY
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2N2VlZjVmMC1hMTVjLTQ1ZTMtYmI3OS05Y2VjYWFlZDIzNTIiLCJlbWFpbCI6ImFkbWluQG1haWwuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzcxOTkxMTY4LCJleHAiOjE3NzI1OTU5Njh9.2cZsSd5AIMzEV6Ybn1d_qMdtrKdvqBC7q50YPImv7oc
+}
+
+body:json {
+  {
+    "name": "Algebra",
+    "description": "learn basic to advanced English from best teachers"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

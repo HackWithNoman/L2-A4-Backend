@@ -1,0 +1,24 @@
+meta {
+  name: Create Review
+  type: http
+  seq: 7
+}
+
+post {
+  url: http://localhost:4000/api/v1/student/reviews
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "booking_id": "26050526-e6db-48f6-bea2-929d44dd707e",
+    "rating": 5,
+    "comment": "Great tutor, very helpful and patient!"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

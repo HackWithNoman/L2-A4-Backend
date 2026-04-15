@@ -7,7 +7,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npx tsx watch --include ./src ./src/server.ts",
-    "generate": "npx tsx ./src/scripts/generate-module.ts"
+    "generate": "npx tsx ./src/scripts/generate-module.ts",
+    "build": "tsc",
+    "start": "node dist/server.js"
   },
   "keywords": [],
   "author": "",

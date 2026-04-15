@@ -1,10 +1,10 @@
 import express from "express";
-import { authRouter } from "./modules/Auth/auth.router";
-import { tutorRouter } from "./modules/Tutor/tutor.router";
-import { adminRouter } from "./modules/Admin/admin.router";
-import { publicRouter } from "./modules/Public/public.router";
-import errorHandler from "./Middleware/errorHandler";
-import { studentRouter } from "./modules/Student/student.router";
+import { authRouter } from "./modules/Auth/auth.router.js";
+import { tutorRouter } from "./modules/Tutor/tutor.router.js";
+import { adminRouter } from "./modules/Admin/admin.router.js";
+import { publicRouter } from "./modules/Public/public.router.js";
+import errorHandler from "./Middleware/errorHandler.js";
+import { studentRouter } from "./modules/Student/student.router.js";
 
 const app = express();
 

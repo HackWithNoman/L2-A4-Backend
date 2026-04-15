@@ -1,7 +1,7 @@
-import { prisma } from "../../lib/prisma";
+import { prisma } from "../../lib/prisma.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { UserRole } from "../../../generated/prisma/client";
+import { UserRole } from "../../prisma/generated/prisma/enums.js";
 
 const JWT_SECRET = process.env.JWT_SECRET!;
 const SALT_ROUNDS = 10;

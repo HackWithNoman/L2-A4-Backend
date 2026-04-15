@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import { tutorService } from "./tutor.service";
-import AppError from "../../errors/AppError";
+import { tutorService } from "./tutor.service.js";
+import AppError from "../../errors/AppError.js";
 
 const createProfile = async (
   req: Request,

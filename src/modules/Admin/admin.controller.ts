@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import { adminService } from "./admin.service";
-import AppError from "../../errors/AppError";
-import { UserStatus } from "../../../generated/prisma/enums";
+import { adminService } from "./admin.service.js";
+import AppError from "../../errors/AppError.js";
+import { UserStatus } from "../../prisma/generated/prisma/enums.js";
 
 const createCategory = async (req: Request, res: Response) => {
   const payload = req.body;

@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import AppError from "../../errors/AppError";
-import { studentService } from "./student.service";
-import { CANCELLED } from "dns/promises";
+import AppError from "../../errors/AppError.js";
+import { studentService } from "./student.service.js";
 
 const getProfile = async (req: Request, res: Response, next: NextFunction) => {
   try {

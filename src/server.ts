@@ -1,11 +1,12 @@
-import app from "./app";
+import { Request, Response } from "express";
+import app from "./app.js";
 import dotenv from "dotenv";
 
 dotenv.config();
 
 const PORT = process.env.PORT || 5000;
 
-app.get("/", (req, res) => {
+app.get("/", (req: Request, res: Response) => {
   res.json({ message: "Welcome to skillbridge API" });
 });
 

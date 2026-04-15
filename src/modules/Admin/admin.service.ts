@@ -1,7 +1,8 @@
 import { JwtPayload } from "jsonwebtoken";
-import { prisma } from "../../lib/prisma";
-import AppError from "../../errors/AppError";
-import { UserStatus } from "../../../generated/prisma/enums";
+import { prisma } from "../../lib/prisma.js";
+import AppError from "../../errors/AppError.js";
+import { UserStatus } from "../../prisma/generated/prisma/enums.js";
+
 
 const createCategory = async (payload: JwtPayload) => {
   const category = await prisma.category.create({

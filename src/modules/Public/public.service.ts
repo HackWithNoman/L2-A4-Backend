@@ -1,5 +1,5 @@
-import AppError from "../../errors/AppError";
-import { prisma } from "../../lib/prisma";
+import AppError from "../../errors/AppError.js";
+import { prisma } from "../../lib/prisma.js";
 
 const getCategories = async () => {
   const categories = await prisma.category.findMany();

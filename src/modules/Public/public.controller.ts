@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { publicService } from "./public.service";
+import { publicService } from "./public.service.js";
 
 const getCategories = async (
   req: Request,

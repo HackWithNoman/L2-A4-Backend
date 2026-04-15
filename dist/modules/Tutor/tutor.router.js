@@ -1,0 +1,12 @@
+import express from "express";
+import { tutorController } from "./tutor.controller.js";
+import { authenticate, authorize } from "../../Middleware/auth.js";
+const router = express.Router();
+router.post("/profile", authenticate, authorize("TUTOR"), tutorController.createProfile);
+router.get("/profile", authenticate, authorize("TUTOR"), tutorController.getProfile);
+router.put("/profile", authenticate, authorize("TUTOR"), tutorController.updateProfile);
+router.post("/availability", authenticate, authorize("TUTOR"), tutorController.createAvailability);
+router.delete("/availability/:id", authenticate, authorize("TUTOR"), tutorController.deleteAvailability);
+router.get("/bookings", authenticate, authorize("TUTOR"), tutorController.getTutorBookings);
+router.patch("/bookings/:id", authenticate, authorize("TUTOR"), tutorController.updateBookingStatus);
+export const tutorRouter = router;

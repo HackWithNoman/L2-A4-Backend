@@ -1,15 +1,36 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
+declare global {
+  namespace Express {
+    interface Request {
+      user?: {
+        userId: string;
+        email: string;
+        role: "STUDENT" | "TUTOR" | "ADMIN";
+      };
+    }
+  }
+}
+
 export const authenticate = (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
-  const token = req.headers.authorization?.split(" ")[1];
-  if (!token) return res.status(401).json({ message: "Unauthorized" });
-
   try {
+    // 1. Try cookie first (BEST for Next.js)
+    const cookieToken = req.cookies?.token;
+
+    // 2. Fallback to Authorization header
+    const headerToken = req.headers.authorization?.split(" ")[1];
+
+    const token = cookieToken || headerToken;
+
+    if (!token) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
     const decoded = jwt.verify(token, process.env.JWT_SECRET!) as {
       userId: string;
       email: string;
@@ -17,23 +38,25 @@ export const authenticate = (
     };
 
     req.user = decoded;
+
     next();
-  } catch {
-    res.status(401).json({ message: "Invalid token" });
+  } catch (error) {
+    return res.status(401).json({ message: "Invalid token" });
   }
 };
 
-// Role guard
-export const authorize = (...roles: string[]) => {
+type Role = "STUDENT" | "TUTOR" | "ADMIN";
+
+export const authorize = (...roles: Role[]) => {
   return (req: Request, res: Response, next: NextFunction) => {
     if (!req.user) {
-      res.status(401).json({ message: "Unauthorized" });
-      return;
+      return res.status(401).json({ message: "Unauthorized" });
     }
 
     if (!roles.includes(req.user.role)) {
       return res.status(403).json({ message: "Forbidden" });
     }
+
     next();
   };
 };

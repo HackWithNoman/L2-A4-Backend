@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { authService } from "./auth.service.js";
+import { prisma } from "../../lib/prisma.js";
 
 const createUser = async (req: Request, res: Response) => {
   try {
@@ -33,7 +34,18 @@ const loginUser = async (req: Request, res: Response) => {
     }
 
     const result = await authService.loginUser(email, password);
-    res.status(200).json({ message: "Login successful", ...result });
+
+    res.cookie("token", result.token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+      maxAge: 1000 * 60 * 60 * 24 * 7,
+    });
+
+    return res.json({
+      success: true,
+      user: result.user,
+    });
   } catch (error: any) {
     if (error.message === "Invalid credentials") {
       res.status(401).json({ message: error.message });
@@ -44,27 +56,15 @@ const loginUser = async (req: Request, res: Response) => {
 };
 
 const getMe = async (req: Request, res: Response) => {
-  try {
-    const user = req.user;
+  const user = authService.getMe(req.user!.userId);
 
-    if (!user) {
-      res.status(401).json({ message: "Unauthorized" });
-      return;
-    }
-
-    const freshUser = await authService.getMe(user.userId);
-
-    if (!freshUser) {
-      res.status(404).json({ message: "User not found" });
-      return;
-    }
-
-    res
-      .status(200)
-      .json({ message: "User retrieved successfully", user: freshUser });
-  } catch (error: any) {
-    res.status(500).json({ message: "Internal server error" });
+  if (!user) {
+    return res.status(404).json({
+      message: "User not found",
+    });
   }
+
+  res.json({ user });
 };
 
 export const authController = {

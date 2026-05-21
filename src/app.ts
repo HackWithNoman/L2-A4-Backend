@@ -5,8 +5,21 @@ import { adminRouter } from "./modules/Admin/admin.router.js";
 import { publicRouter } from "./modules/Public/public.router.js";
 import errorHandler from "./Middleware/errorHandler.js";
 import { studentRouter } from "./modules/Student/student.router.js";
+import cors from "cors";
+import cookieParser from "cookie-parser";
 
 const app = express();
+
+app.use(express.json());
+
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  }),
+);
+
+app.use(cookieParser());
 
 app.use(express.json());
 

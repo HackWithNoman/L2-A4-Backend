@@ -5,7 +5,8 @@ import { authenticate } from "../../Middleware/auth.js";
 const router = express.Router();
 
 router.post("/register", authController.createUser);
-router.post("/login", authController.loginUser);
+router.post("/login", authController.logInUser);
+router.post("/logout", authController.logOutUser);
 router.get("/me", authenticate, authController.getMe);
 
 export const authRouter = router;

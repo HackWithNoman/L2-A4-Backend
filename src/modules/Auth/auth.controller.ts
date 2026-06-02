@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { authService } from "./auth.service.js";
-import { prisma } from "../../lib/prisma.js";
 
 const createUser = async (req: Request, res: Response) => {
   try {
@@ -24,7 +23,7 @@ const createUser = async (req: Request, res: Response) => {
   }
 };
 
-const loginUser = async (req: Request, res: Response) => {
+const logInUser = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
 
@@ -55,8 +54,22 @@ const loginUser = async (req: Request, res: Response) => {
   }
 };
 
+const logOutUser = async (req: Request, res: Response) => {
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: false,
+    sameSite: "lax",
+    path: "/",
+  });
+
+  res.status(200).json({
+    success: true,
+    message: "Logged out successfully",
+  });
+};
+
 const getMe = async (req: Request, res: Response) => {
-  const user = authService.getMe(req.user!.userId);
+  const user = await authService.getMe(req.user!.userId);
 
   if (!user) {
     return res.status(404).json({
@@ -69,6 +82,7 @@ const getMe = async (req: Request, res: Response) => {
 
 export const authController = {
   createUser,
-  loginUser,
+  logInUser,
+  logOutUser,
   getMe,
 };
